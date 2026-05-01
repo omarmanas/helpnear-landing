@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="HelpNear helps people request support, offer help, and coordinate safely with nearby community members." />
+  <title>HelpNear | Trusted Local Help Nearby</title>
+
+  <style>
+    :root {
+      --bg: #f7f9fc;
+      --surface: #ffffff;
+      --surface-soft: #eef5ff;
+      --text: #111827;
+      --muted: #5f6b7a;
+      --border: #e2e8f0;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-soft: #dbeafe;
+      --green: #16a34a;
+      --green-soft: #dcfce7;
+      --warning-bg: #fff7ed;
+      --warning-border: #fed7aa;
+      --warning-text: #9a3412;
+      --shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+      --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.06);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+      --max: 1120px;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font);
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 36rem),
+        radial-gradient(circle at top right, rgba(22, 163, 74, 0.10), transparent 32rem),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(100% - 40px, var(--max));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(247, 249, 252, 0.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+    }
+
+    .nav-inner {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.3rem;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--green));
+      color: white;
+      font-size: 0.95rem;
+      font-weight: 800;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.22);
+    }
+
+    .brand span:last-child strong {
+      color: var(--green);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      color: var(--muted);
+      font-size: 0.94rem;
+      font-weight: 650;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 20px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 750;
+      font-size: 0.96rem;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 14px 28px rgba(37, 99, 235, 0.22);
+    }
+
+    .button-primary:hover {
+      background: var(--primary-dark);
+      box-shadow: 0 18px 36px rgba(37, 99, 235, 0.28);
+    }
+
+    .button-secondary {
+      background: white;
+      color: var(--primary);
+      border-color: rgba(37, 99, 235, 0.28);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .mobile-menu-button {
+      display: none;
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 12px;
+      width: 44px;
+      height: 44px;
+      font-size: 1.15rem;
+      cursor: pointer;
+    }
+
+    .mobile-menu {
+      display: none;
+      padding: 0 0 18px;
+    }
+
+    .mobile-menu a {
+      display: block;
+      padding: 12px 0;
+      color: var(--muted);
+      font-weight: 700;
+      border-top: 1px solid var(--border);
+    }
+
+    .hero {
+      padding: 96px 0 64px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+      align-items: center;
+      gap: 56px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border: 1px solid rgba(37, 99, 235, 0.18);
+      background: rgba(219, 234, 254, 0.75);
+      color: var(--primary-dark);
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 800;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 5px rgba(22, 163, 74, 0.12);
+    }
+
+    h1 {
+      font-size: clamp(2.65rem, 5.6vw, 5rem);
+      line-height: 0.98;
+      letter-spacing: -0.075em;
+      max-width: 790px;
+      margin-bottom: 24px;
+    }
+
+    h1 .accent {
+      color: var(--primary);
+    }
+
+    .hero-text {
+      max-width: 650px;
+      color: var(--muted);
+      font-size: 1.15rem;
+      margin-bottom: 32px;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .hero-note {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .app-card {
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      border-radius: 36px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-card::before {
+      content: "";
+      position: absolute;
+      inset: -80px -80px auto auto;
+      width: 180px;
+      height: 180px;
+      background: rgba(37, 99, 235, 0.12);
+      border-radius: 50%;
+    }
+
+    .phone-shell {
+      position: relative;
+      background: #0f172a;
+      border-radius: 28px;
+      padding: 14px;
+      max-width: 390px;
+      margin: 0 auto;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+    }
+
+    .phone-screen {
+      background: #f8fafc;
+      border-radius: 21px;
+      overflow: hidden;
+      min-height: 590px;
+    }
+
+    .phone-top {
+      padding: 18px;
+      background: linear-gradient(135deg, #ffffff, #eef5ff);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .phone-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .phone-title {
+      font-size: 1.08rem;
+      font-weight: 850;
+      letter-spacing: -0.02em;
+    }
+
+    .status-pill {
+      background: var(--green-soft);
+      color: #166534;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.74rem;
+      font-weight: 850;
+    }
+
+    .search-bar {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 12px 14px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .phone-content {
+      padding: 18px;
+      display: grid;
+      gap: 13px;
+    }
+
+    .request-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 15px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+    }
+
+    .request-card-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .request-card h3 {
+      font-size: 0.94rem;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+
+    .request-meta {
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 6px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      height: 26px;
+      padding: 0 9px;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .map-strip {
+      height: 128px;
+      background:
+        linear-gradient(90deg, rgba(37,99,235,0.18) 1px, transparent 1px),
+        linear-gradient(rgba(37,99,235,0.14) 1px, transparent 1px),
+        linear-gradient(135deg, #eff6ff, #ecfdf5);
+      background-size: 28px 28px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pin {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 50% 50% 50% 0;
+      background: var(--primary);
+      transform: rotate(-45deg);
+      box-shadow: 0 0 0 8px rgba(37, 99, 235, 0.13);
+    }
+
+    .pin.one { top: 34px; left: 74px; }
+    .pin.two { top: 58px; right: 88px; background: var(--green); box-shadow: 0 0 0 8px rgba(22, 163, 74, 0.13); }
+    .pin.three { bottom: 26px; left: 170px; }
+
+    .section {
+      padding: 80px 0;
+    }
+
+    .section-header {
+      max-width: 720px;
+      margin: 0 auto 42px;
+      text-align: center;
+    }
+
+    .section-kicker {
+      color: var(--primary);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.08;
+      letter-spacing: -0.055em;
+      margin-bottom: 14px;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .card-number {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      background: var(--primary);
+      color: white;
+      border-radius: 13px;
+      font-weight: 900;
+      margin-bottom: 18px;
+    }
+
+    .card-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: var(--primary-soft);
+      display: grid;
+      place-items: center;
+      color: var(--primary-dark);
+      font-weight: 950;
+      margin-bottom: 16px;
+    }
+
+    .card h3 {
+      font-size: 1.08rem;
+      letter-spacing: -0.025em;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .surface-section {
+      background: rgba(255,255,255,0.62);
+      border-top: 1px solid rgba(226,232,240,0.8);
+      border-bottom: 1px solid rgba(226,232,240,0.8);
+    }
+
+    .safety-panel {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .safety-primary {
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: 34px;
+      box-shadow: var(--shadow);
+    }
+
+    .safety-primary h2 {
+      color: white;
+    }
+
+    .safety-primary p {
+      color: rgba(255,255,255,0.76);
+      margin-bottom: 24px;
+    }
+
+    .safety-list {
+      display: grid;
+      gap: 12px;
+      list-style: none;
+    }
+
+    .safety-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      color: rgba(255,255,255,0.9);
+      font-weight: 650;
+    }
+
+    .check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(22, 163, 74, 0.22);
+      display: inline-grid;
+      place-items: center;
+      color: #86efac;
+      font-size: 0.8rem;
+      flex: 0 0 auto;
+      margin-top: 1px;
+    }
+
+    .warning {
+      margin-top: 20px;
+      background: var(--warning-bg);
+      border: 1px solid var(--warning-border);
+      color: var(--warning-text);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      font-weight: 650;
+    }
+
+    .beta-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .beta-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .beta-marker {
+      width: 30px;
+      height: 30px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      font-weight: 950;
+      flex: 0 0 auto;
+    }
+
+    .faq {
+      max-width: 780px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+
+    details {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 20px 22px;
+      font-weight: 800;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: "+";
+      color: var(--primary);
+      font-size: 1.3rem;
+      line-height: 1;
+    }
+
+    details[open] summary::after {
+      content: "–";
+    }
+
+    details p {
+      color: var(--muted);
+      padding: 0 22px 20px;
+    }
+
+    .cta-panel {
+      background: linear-gradient(135deg, var(--primary), #1e40af);
+      color: white;
+      border-radius: 34px;
+      padding: 46px;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .cta-panel h2 {
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    .cta-panel p {
+      color: rgba(255,255,255,0.78);
+      max-width: 650px;
+    }
+
+    .cta-panel .button {
+      background: white;
+      color: var(--primary-dark);
+      box-shadow: none;
+    }
+
+    footer {
+      padding: 36px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border-top: 1px solid var(--border);
+      padding-top: 26px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      font-weight: 650;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    @media (max-width: 920px) {
+      .hero-grid,
+      .safety-panel,
+      .cta-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-3,
+      .grid-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .nav-links,
+      .nav .button-primary {
+        display: none;
+      }
+
+      .mobile-menu-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .mobile-menu.open {
+        display: block;
+      }
+
+      .hero {
+        padding-top: 62px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .container {
+        width: min(100% - 28px, var(--max));
+      }
+
+      .nav-inner {
+        height: 66px;
+      }
+
+      .hero {
+        padding: 46px 0 48px;
+      }
+
+      .hero-actions,
+      .hero-actions .button,
+      .cta-panel .button {
+        width: 100%;
+      }
+
+      .grid-3,
+      .grid-4 {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 56px 0;
+      }
+
+      .phone-screen {
+        min-height: 520px;
+      }
+
+      .cta-panel {
+        padding: 30px 22px;
+        border-radius: 24px;
+      }
+
+      .footer-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top" aria-label="HelpNear home">
+        <span class="brand-mark">HN</span>
+        <span>Help<strong>Near</strong></span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#how-it-works">How it works</a>
+        <a href="#features">Features</a>
+        <a href="#safety">Safety</a>
+        <a href="#beta">Private beta</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+
+      <a class="button button-primary" href="mailto:helpnear.support@gmail.com?subject=HelpNear%20Private%20Beta%20Request">Join the private beta</a>
+      <button class="mobile-menu-button" type="button" aria-label="Open menu" onclick="toggleMenu()">☰</button>
+    </div>
+
+    <div class="container mobile-menu" id="mobileMenu">
+      <a href="#how-it-works" onclick="toggleMenu(false)">How it works</a>
+      <a href="#features" onclick="toggleMenu(false)">Features</a>
+      <a href="#safety" onclick="toggleMenu(false)">Safety</a>
+      <a href="#beta" onclick="toggleMenu(false)">Private beta</a>
+      <a href="#faq" onclick="toggleMenu(false)">FAQ</a>
+      <a href="mailto:helpnear.support@gmail.com?subject=HelpNear%20Private%20Beta%20Request">Join the private beta</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow"><span class="eyebrow-dot"></span>Android private beta</div>
+          <h1>Find <span class="accent">trusted local help</span> nearby.</h1>
+          <p class="hero-text">HelpNear helps people request support, offer help, and coordinate safely with nearby community members.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="mailto:helpnear.support@gmail.com?subject=HelpNear%20Private%20Beta%20Request">Join the private beta</a>
+            <a class="button button-secondary" href="mailto:helpnear.support@gmail.com?subject=HelpNear%20Support">Contact support</a>
+          </div>
+          <p class="hero-note">Currently Android only. No payment system. Not an emergency service.</p>
+        </div>
+
+        <aside class="app-card" aria-label="HelpNear app preview illustration">
+          <div class="phone-shell">
+            <div class="phone-screen">
+              <div class="phone-top">
+                <div class="phone-row">
+                  <div class="phone-title">Nearby help</div>
+                  <div class="status-pill">Private beta</div>
+                </div>
+                <div class="search-bar">Search by need, skill, or location</div>
+              </div>
+              <div class="phone-content">
+                <div class="map-strip" aria-hidden="true">
+                  <span class="pin one"></span>
+                  <span class="pin two"></span>
+                  <span class="pin three"></span>
+                </div>
+
+                <div class="request-card">
+                  <div class="request-card-header">
+                    <h3>Need help carrying groceries</h3>
+                    <span class="tag">Errands</span>
+                  </div>
+                  <p class="request-meta">0.8 mi away · Today · Offer available</p>
+                </div>
+
+                <div class="request-card">
+                  <div class="request-card-header">
+                    <h3>Language help for appointment</h3>
+                    <span class="tag">Language</span>
+                  </div>
+                  <p class="request-meta">1.4 mi away · Message safely in app</p>
+                </div>
+
+                <div class="request-card">
+                  <div class="request-card-header">
+                    <h3>Local guidance for a new neighbor</h3>
+                    <span class="tag">Guidance</span>
+                  </div>
+                  <p class="request-meta">Review after completion · Report concerns anytime</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section surface-section" id="how-it-works">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-kicker">Process</div>
+          <h2>Simple coordination for everyday local support.</h2>
+          <p class="section-subtitle">HelpNear keeps the core flow clear: request help, connect with nearby helpers, coordinate, complete, and review.</p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <div class="card-number">1</div>
+            <h3>Create a local request</h3>
+            <p>Describe what you need, choose a category, and share enough context for nearby helpers to respond.</p>
+          </article>
+          <article class="card">
+            <div class="card-number">2</div>
+            <h3>Discover nearby helpers</h3>
+            <p>Browse local profiles, availability, categories, and map-based discovery when location access is enabled.</p>
+          </article>
+          <article class="card">
+            <div class="card-number">3</div>
+            <h3>Send or accept offers</h3>
+            <p>Helpers can send offers. Requesters can review offers and accept the one that fits the need.</p>
+          </article>
+          <article class="card">
+            <div class="card-number">4</div>
+            <h3>Coordinate in messages</h3>
+            <p>Once matched, both sides can coordinate through in-app messaging.</p>
+          </article>
+          <article class="card">
+            <div class="card-number">5</div>
+            <h3>Mark completed</h3>
+            <p>After the interaction, the requester can mark the request completed.</p>
+          </article>
+          <article class="card">
+            <div class="card-number">6</div>
+            <h3>Leave a review</h3>
+            <p>Reviews are tied to completed requests to support trust and accountability.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-kicker">Features</div>
+          <h2>Built for a focused private beta.</h2>
+          <p class="section-subtitle">The current Android build supports the core marketplace flow needed to test real local help interactions.</p>
+        </div>
+
+        <div class="grid-4">
+          <article class="card"><div class="card-icon">R</div><h3>Local requests</h3><p>Create and manage help requests in your area.</p></article>
+          <article class="card"><div class="card-icon">H</div><h3>Helper discovery</h3><p>Find nearby people who are available to help.</p></article>
+          <article class="card"><div class="card-icon">M</div><h3>Map discovery</h3><p>Use location-based discovery when permissions are enabled.</p></article>
+          <article class="card"><div class="card-icon">O</div><h3>Offers</h3><p>Send, withdraw, re-send, accept, or decline offers.</p></article>
+          <article class="card"><div class="card-icon">C</div><h3>Conversations</h3><p>Coordinate matched requests through in-app messages.</p></article>
+          <article class="card"><div class="card-icon">N</div><h3>In-app notices</h3><p>Receive in-app updates for offers, messages, and accepted offers.</p></article>
+          <article class="card"><div class="card-icon">★</div><h3>Reviews</h3><p>Review helpers after completed request interactions.</p></article>
+          <article class="card"><div class="card-icon">S</div><h3>Safety reporting</h3><p>Report safety or community concerns for moderation review.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section surface-section" id="safety">
+      <div class="container safety-panel">
+        <div class="safety-primary">
+          <div class="section-kicker" style="color:#93c5fd">Safety</div>
+          <h2>Trust and safety are part of the beta design.</h2>
+          <p>HelpNear is designed for everyday community support, not emergency response. The beta includes safety reporting and moderation support to review concerns.</p>
+          <ul class="safety-list">
+            <li><span class="check">✓</span><span>User profiles help people understand who they are connecting with.</span></li>
+            <li><span class="check">✓</span><span>Reviews appear after completed request interactions.</span></li>
+            <li><span class="check">✓</span><span>Reports can be submitted from key safety entry points.</span></li>
+            <li><span class="check">✓</span><span>Admin moderation support is available during private beta.</span></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="section-header" style="text-align:left;margin:0 0 20px;">
+            <div class="section-kicker">Limitations</div>
+            <h2 id="beta">Private beta scope.</h2>
+            <p class="section-subtitle">These limitations are intentional while the app is tested with a small group.</p>
+          </div>
+          <div class="beta-list">
+            <div class="beta-item"><span class="beta-marker">1</span><div><strong>Android only</strong><p>iOS is not available during this beta phase.</p></div></div>
+            <div class="beta-item"><span class="beta-marker">2</span><div><strong>In-app notifications only</strong><p>Native push notifications are not enabled yet.</p></div></div>
+            <div class="beta-item"><span class="beta-marker">3</span><div><strong>No payment system</strong><p>HelpNear does not process payments in the current build.</p></div></div>
+            <div class="beta-item"><span class="beta-marker">4</span><div><strong>Email/password sign-in</strong><p>Google and Facebook sign-in are disabled for now.</p></div></div>
+          </div>
+          <div class="warning"><strong>Emergency disclaimer:</strong> HelpNear is not an emergency service. For emergencies or immediate safety risks, contact local emergency services directly.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-kicker">FAQ</div>
+          <h2>Frequently asked questions.</h2>
+          <p class="section-subtitle">Clear answers for early testers and community members.</p>
+        </div>
+
+        <div class="faq">
+          <details>
+            <summary>What is HelpNear?</summary>
+            <p>HelpNear is a local helper and community support marketplace that helps people request support, offer help, and coordinate safely with nearby community members.</p>
+          </details>
+          <details>
+            <summary>Is HelpNear available on iOS?</summary>
+            <p>No. HelpNear is currently Android only during private beta. iOS support may be considered later.</p>
+          </details>
+          <details>
+            <summary>Does HelpNear handle payments?</summary>
+            <p>No. HelpNear does not include a payment system in the current private beta build.</p>
+          </details>
+          <details>
+            <summary>Is HelpNear an emergency service?</summary>
+            <p>No. HelpNear is not an emergency service. For emergencies or immediate safety risks, contact local emergency services directly.</p>
+          </details>
+          <details>
+            <summary>How do I report a safety concern?</summary>
+            <p>Use the in-app reporting options or contact support at helpnear.support@gmail.com.</p>
+          </details>
+          <details>
+            <summary>How can I request account or data deletion?</summary>
+            <p>Send a request to helpnear.support@gmail.com. Include the email address associated with your HelpNear account.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta-panel">
+          <div>
+            <h2>Interested in the private beta?</h2>
+            <p>Contact HelpNear support to ask about beta access, share feedback, or request account and data deletion.</p>
+          </div>
+          <a class="button" href="mailto:helpnear.support@gmail.com?subject=HelpNear%20Private%20Beta%20Request">Contact support</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <div class="brand" aria-label="HelpNear"><span class="brand-mark">HN</span><span>Help<strong>Near</strong></span></div>
+        <p style="margin-top:10px;">© 2026 HelpNear. All rights reserved.</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="https://docs.google.com/document/d/1KSJvemyx5t7XdWaQnqfAHdfp3qXm4Rk_spVTYiFnV34/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+        <a href="mailto:helpnear.support@gmail.com">Support</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMenu(force) {
+      const menu = document.getElementById('mobileMenu');
+      const shouldOpen = typeof force === 'boolean' ? force : !menu.classList.contains('open');
+      menu.classList.toggle('open', shouldOpen);
+    }
+  </script>
+</body>
+</html>
