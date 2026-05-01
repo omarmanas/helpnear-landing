@@ -708,23 +708,29 @@
     }
 
     @media (max-width: 560px) {
-      .container {
-        width: min(100% - 28px, var(--max));
-      }
+  .container {
+    width: min(100% - 28px, var(--max));
+  }
 
-      .nav-inner {
-        height: 66px;
-      }
+  .nav-inner {
+    height: 66px;
+  }
 
-      .hero {
-        padding: 46px 0 48px;
-      }
+  .hero {
+    padding: 46px 0 48px;
+  }
 
-      .hero-actions,
-      .hero-actions .button,
-      .cta-panel .button {
-        width: 100%;
-      }
+  h1 {
+    font-size: clamp(2.35rem, 12vw, 3.1rem);
+    line-height: 1.04;
+    letter-spacing: -0.065em;
+  }
+
+  .hero-actions,
+  .hero-actions .button,
+  .cta-panel .button {
+    width: 100%;
+  }
 
       .grid-3,
       .grid-4 {
